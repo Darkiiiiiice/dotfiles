@@ -1,0 +1,461 @@
+(defvar br_reveal false)
+(defvar time_reveal false)
+
+(defpoll workspaces_list :interval "1s"
+  :initial "[]"
+  `hyprctl -j workspaces`
+)
+
+(defvar time-visible false)
+(defpoll awk :interval "1s"
+  :initial "{}"
+  :run-while time-visible
+  `hyprctl -j activeworkspace`
+)
+
+(defpoll brightness_percent :interval "1s"
+  :initial "100"
+  `brightnessctl -m -d amdgpu_bl1 | awk -F, '{print $4}' | tr  -d '%'`
+)
+
+(defpoll net_state :interval "1s"
+  :initial "[{}]"
+  `ip -j link show wlp1s0`
+)
+
+(defpoll clock_hour :interval "1h" "date +\%I")
+(defpoll clock_minute :interval "1m" "date +\%M")
+(defpoll clock_sec :interval "1s" "date +\%S")
+(defpoll clock_date :interval "24h" "date '+%Y-%m-%d'")
+
+
+
+
+(defwindow main
+  :monitor 0
+  :geometry (geometry :x "0%"
+    :y "0%"
+    :width "100%"
+    :height "4%"
+    :anchor "top center"
+  )
+  :stacking "fg"
+  :exclusive true
+  :focusable false
+  (main_bar)
+)
+
+(defwidget workspaces []
+  (box
+    :class "works"
+    :orientation "h"
+    :spacing 4
+    :valign "center"
+    :halign "center"
+    :space-evenly "false"
+    :tooltip "${awk.lastwindowtitle}"
+    (for wrk in workspaces_list
+      (button
+        :onclick "hyprctl dispatch workspace ${wrk.id}"
+        :class {wrk.id == awk.id ? 'w f':'w'}
+        :tooltip "${wrk.lastwindowtitle}"
+        {
+        wrk.id == 1 ? "󰩃":
+        wrk.id == 2 ? "󰄛":
+        wrk.id == 3 ? "󱩡":
+        wrk.id == 4 ? "󰮣":
+        wrk.id == 5 ? "󰝴":
+        wrk.id == 6 ? "󱖉":
+        wrk.id == 7 ? "󰼁":
+        wrk.id == 8 ? "󱢴":
+        wrk.id == 9 ? "󱜿":
+        wrk.id == 10 ? "󰊠":
+        ""
+        }
+      )
+    )
+  )
+)
+
+(defwidget bright []
+  (eventbox
+    :onhover "${EWW_CMD} update br_reveal=true"
+    :onhoverlost "${EWW_CMD} update br_reveal=false"
+    (box :class "bright"
+      :space-evenly false
+      :orientation "h"
+      :spacing 3
+      (label
+        :text {brightness_percent >= 75 ? "󰃠" :
+        brightness_percent >= 50 && brightness_percent < 75 ? "󰃟" :
+        (brightness_percent >= 25 && brightness_percent < 50 ? "󰃞" : "󰃝")
+        }
+        :class "bright_icon"
+        :tooltip "brightness"
+      )
+      (revealer :transition "slideleft"
+        :reveal br_reveal
+        :duration "600ms"
+        (scale
+          :class "brightbar"
+          :value {brightness_percent}
+          :orientation "h"
+          :valign "center"
+          :flipped false
+          :marks true
+          :tooltip "${brightness_percent}%"
+          :max 100
+          :min 0
+          :onchange "brightnessctl set {}%"
+        )
+      )
+    )
+  )
+)
+
+(defwidget clock_module []
+  (eventbox
+    :onhover "${EWW_CMD} update time_reveal=true"
+    :onhoverlost "${EWW_CMD} update time_reveal=false"
+    (box
+      :class "clock"
+      :space-evenly "false"
+      :orientation "h"
+      :spacing "3"
+      (label :text "󱑆" :class "clock_time_icon" )
+      (label :text clock_hour :class "clock_hour_class" )
+      (label :text ":" :class "clock_time_sep" )
+      (label :text clock_minute :class "clock_minute_class")
+      (label :text ":" :class "clock_time_sep" )
+      (label :text clock_sec :class "clock_minute_class")
+      (revealer
+        :transition "slideleft"
+        :reveal time_reveal
+        :duration "600ms"
+        (button
+          :class "clock_date_class"
+          ; TODO: call calendar
+          :onclick "$HOME/.config/eww/bar/scripts/pop calendar" clock_date
+        )
+      )
+    )
+  )
+)
+
+(defwidget cpu []
+  (box :class "cpu"
+    :space-evenly false
+    :orientation "h"
+    :halign "center"
+    :valign "center"
+    :spacing 0
+    (label
+      :text ""
+      :justify "left"
+      :angle 0
+      :class "cpu_icon"
+      :tooltip "${EWW_CPU}"
+    )
+    (circular-progress
+      :value {EWW_CPU.avg}
+      :start-at 25
+      :thickness 4
+      :clockwise true
+      :class "cpu_text"
+      :tooltip "${EWW_CPU.avg}"
+      (button
+        :class "icondot"
+        :tooltip "battery on 100%"
+        :onclick "$HOME/.config/eww/bar/scripts/pop system"
+        ""
+      )
+    )
+  )
+)
+
+(defwidget mem []
+  (box :class "mem"
+    :space-evenly false
+    :orientation "h"
+    :halign "center"
+    :valign "center"
+    ; :vexpand "false"
+    ; :hexpand "false"
+    :spacing 0
+    (label
+      :text ""
+      :justify "left"
+      :angle 0
+      :class "mem_icon"
+      :tooltip "${EWW_RAM}"
+    )
+    (circular-progress
+      :value {EWW_RAM.used_mem_perc}
+      :start-at 25
+      :thickness 4
+      :clockwise true
+      :class "mem_text"
+      :tooltip "${EWW_RAM.avg}"
+      (button
+        :class "icondot"
+        :tooltip "battery on 100%"
+        :onclick "$HOME/.config/eww/bar/scripts/pop system"
+        ""
+      )
+    )
+  )
+)
+
+(defwidget temprature []
+  (box :class "temprature"
+    :space-evenly false
+    :orientation "h"
+    :halign "center"
+    :valign "center"
+    :spacing 0
+    (label
+      :text "󰔄"
+      :justify "left"
+      :angle 0
+      :class "temprature_icon"
+      :tooltip "${EWW_RAM}"
+    )
+    (circular-progress
+      :value {EWW_TEMPS.AMDGPU_EDGE}
+      :start-at 25
+      :thickness 4
+      :clockwise true
+      :class "temprature_text"
+      :tooltip "${EWW_CPU.avg}"
+      (button
+        :class "icondot"
+        :tooltip "battery on 100%"
+        :onclick "$HOME/.config/eww/bar/scripts/pop system"
+        ""
+      )
+    )
+  )
+)
+
+(defwidget bat []
+  (box :class "bat"
+    :space-evenly false
+    :orientation "h"
+    :halign "center"
+    :valign "center"
+    :spacing 0
+    (label
+      :text {EWW_BATTERY['BAT0'].capacity < 10 ? (EWW_BATTERY['BAT0'].status == "Charging"?"":"󰢜") :
+      EWW_BATTERY['BAT0'].capacity < 20 ?(EWW_BATTERY['BAT0'].status == "Charging"?"󰂆":"󰁻")  :
+      EWW_BATTERY['BAT0'].capacity < 30 ? (EWW_BATTERY['BAT0'].status == "Charging"?"󰂇": "󰁼"):
+      EWW_BATTERY['BAT0'].capacity < 40 ? (EWW_BATTERY['BAT0'].status == "Charging"?"󰂈": "󰁽"):
+      EWW_BATTERY['BAT0'].capacity < 50 ? (EWW_BATTERY['BAT0'].status == "Charging"?"󰢝":"󰁾") :
+      EWW_BATTERY['BAT0'].capacity < 60 ? (EWW_BATTERY['BAT0'].status == "Charging"?"󰂉":"󰁿") :
+      EWW_BATTERY['BAT0'].capacity < 70 ? (EWW_BATTERY['BAT0'].status == "Charging"?"󰢞":"󰂀") :
+      EWW_BATTERY['BAT0'].capacity < 80 ? (EWW_BATTERY['BAT0'].status == "Charging"?"󰂊":"󰂁") :
+      EWW_BATTERY['BAT0'].capacity < 90 ?(EWW_BATTERY['BAT0'].status == "Charging"?"󰂋":"󰂂") :
+      (EWW_BATTERY['BAT0'].status == "Full"?"󰁹":"󰂅")
+      }
+      :justify "left"
+      :angle 0
+      :class "bat_icon"
+      :tooltip "Status: ${EWW_BATTERY['BAT0'].status}"
+    )
+    (label :text "${EWW_BATTERY['BAT0'].capacity}%"
+      :class "bat_text"
+    )
+  )
+)
+
+(defwidget net []
+  (box :class "net"
+    :space-evenly false
+    :orientation "h"
+    :halign "center"
+    :valign "center"
+    :spacing 0
+    (label
+      :text {net_state[0].operstate == "UP"? "" :"󰖪"}
+      :justify "left"
+      :angle 0
+      :class "net_icon"
+      :tooltip "${net_state[0]}"
+    )
+    (revealer
+      :transition "slideleft"
+      :reveal {br_reveal == false && time_reveal == false}
+      :duration "600ms"
+      (box :class "net_speed"
+        :space-evenly false
+        :orientation "h"
+        :halign "center"
+        :valign "center"
+        :visible {net_state[0].operstate == "UP"?true:false}
+        :spacing 0
+        (label :text "󰠽" :class "net_icon_up" )
+        (label
+          :text {EWW_NET.wlp1s0.NET_UP >= 1000000000 ? "${round(EWW_NET.wlp1s0.NET_UP / 1000000000,2)}Gb/s" :
+          EWW_NET.wlp1s0.NET_UP >= 1000000  ? "${round(EWW_NET.wlp1s0.NET_UP / 1000000,2)}Mb/s" :
+          EWW_NET.wlp1s0.NET_UP >= 1000  ? "${round(EWW_NET.wlp1s0.NET_UP / 1000,2)}Kb/s" :
+          EWW_NET.wlp1s0.NET_UP >= 0 ? "${round(EWW_NET.wlp1s0.NET_UP,2)}b/s" : "0kb/s"
+          }
+        :class "net_text" )
+        (label :text "󰧩" :class "net_icon_down" )
+        (label :text {EWW_NET.wlp1s0.NET_DOWN >= 1000000000 ? "${round(EWW_NET.wlp1s0.NET_DOWN / 1000000000,2)}Gb/s" :
+          EWW_NET.wlp1s0.NET_DOWN >= 1000000  ? "${round(EWW_NET.wlp1s0.NET_DOWN / 1000000,2)}Mb/s" :
+          EWW_NET.wlp1s0.NET_DOWN >= 1000  ? "${round(EWW_NET.wlp1s0.NET_DOWN / 1000,2)}Kb/s" :
+          EWW_NET.wlp1s0.NET_DOWN >= 0 ? "${round(EWW_NET.wlp1s0.NET_DOWN,2)}b/s" : "0kb/s"
+          }
+        :class "net_text" )
+      )
+    )
+    
+    
+  )
+)
+
+(defwidget disk []
+  (box :class "disk"
+    :space-evenly false
+    :orientation "h"
+    :halign "center"
+    :valign "center"
+    :spacing 0
+    (label
+      :text "󰋊"
+      :justify "left"
+      :angle 0
+      :class "disk_icon"
+      :tooltip "${EWW_DISK}"
+    )
+    (circular-progress
+      :value {EWW_DISK["/"].used_perc}
+      :start-at 25
+      :thickness 4
+      :clockwise true
+      :class "disk_text"
+      :tooltip "${EWW_DISK["/"]}"
+      (button
+        :class "icondot"
+        :tooltip "battery on 100%"
+        :onclick "$HOME/.config/eww/bar/scripts/pop system"
+        ""
+      )
+    )
+    (circular-progress
+      :value {EWW_DISK["/home"].used_perc}
+      :start-at 25
+      :thickness 4
+      :clockwise true
+      :class "disk_text"
+      :tooltip "${EWW_DISK["/home"]}"
+      (button
+        :class "icondot"
+        :tooltip "battery on 100%"
+        :onclick "$HOME/.config/eww/bar/scripts/pop system"
+        ""
+      )
+    )
+  )
+)
+
+
+(defwidget arch []
+  (box :class "arch"
+    :space-evenly false
+    :orientation "h"
+    :halign "center"
+    :valign "center"
+    :spacing 0
+    (label
+      :text "󰣇"
+      :justify "left"
+      :angle 0
+      :class "arch_icon"
+      :tooltip "brightness"
+    )
+  )
+)
+
+
+(defwidget line []
+  (box :class "line"
+    :space-evenly false
+    :orientation "h"
+    :halign "start"
+    :valign "center"
+    :spacing 0
+    (label
+      :text "󰇙"
+      :justify "left"
+      :angle 0
+      :xalign 0
+      :class "line_icon"
+      :tooltip "brightness"
+    )
+  )
+)
+
+
+
+
+(defwidget left []
+  (box :orientation "h"
+    :space-evenly false
+    :valign "center"
+    :halign "start"
+    :class "left_modules"
+    (arch)
+    (line)
+    (cpu)
+    (mem)
+    (disk)
+    (temprature)
+    
+    
+    ; (volume)
+    ; (wifi)
+    ; (sep)
+    ; (bat)
+    ; (mem)
+    ; (sep)
+    ; (clock_module)
+  )
+)
+
+
+(defwidget right []
+  (box :orientation "h"
+    :space-evenly false
+    :halign "end"
+    :valign "center"
+    :class "right_modules"
+    (bright)
+    (net)
+    (bat)
+    (clock_module)
+  )
+)
+
+
+(defwidget center []
+  (box :orientation "h"
+    :space-evenly false
+    :halign "center"
+    :valign "center"
+    :class "center_modules"
+    ; (music)
+    (workspaces)
+  )
+)
+
+
+(defwidget main_bar []
+  (box :class "bar_class "
+    :orientation "h"
+    :space-evenly true
+    (left)
+    (center)
+    (right)
+  )
+)

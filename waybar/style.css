@@ -1,0 +1,130 @@
+@import "mocha.css";
+
+* {
+    color: @text;
+    font-size: 1em;
+}
+
+window#waybar {
+    background-color: @base;
+    border: 2px solid alpha(@crust, 0.3);
+}
+
+.modules-left {
+    background-color: shade(@flamingo, 0.7);
+    border-radius: 16px;
+    margin-top: 0.2em;
+    margin-bottom: 0.2em;
+    margin-left: 0.5em;
+}
+
+.modules-center {
+    background-color: shade(@flamingo, 0.7);
+    border-radius: 16px;
+    margin-top: 0.2em;
+    margin-bottom: 0.2em;
+    margin-left: 0.5em;
+    margin-right: 0.5em;
+}
+
+.modules-right {
+    background-color: shade(@flamingo, 0.7);
+    border-radius: 16px;
+    margin-top: 0.2em;
+    margin-bottom: 0.2em;
+    margin-right: 0.5em;
+}
+
+#backlight {
+    font-size: 0.8em;
+    margin-left: 1em;
+}
+#cpu {
+    font-size: 0.8em;
+    margin-left: 1em;
+    color: @blue;
+}
+#memory {
+    font-size: 0.8em;
+    margin-left: 0.6em;
+    color: @sapphire;
+}
+#disk {
+    font-size: 0.8em;
+    margin-left: 0.6em;
+    color: @teal;
+}
+#temperature {
+    font-size: 0.8em;
+    margin-left: 0.6em;
+    color: @green;
+}
+#temperature.critical {
+    font-size: 0.8em;
+    margin-left: 0.6em;
+    color: @red;
+}
+#network {
+    font-size: 0.8em;
+    margin-right: 1em;
+}
+
+#clock {
+    font-size: 0.8em;
+    margin-right: 1em;
+}
+
+#window {
+    font-size: 0.8em;
+    margin-right: 1em;
+}
+
+#language {
+    font-size: 0.8em;
+    margin-right: 1em;
+}
+
+#window.empty {
+    min-width: 1em;
+}
+
+#battery {
+    background-color: shade(@flamingo, 0.7);
+    font-size: 0.8em;
+    border-radius: 16px;
+}
+
+#workspaces {
+    min-height: 28px;
+    font-size: 1em;
+}
+
+#workspaces button {
+    border-radius: 128px;
+    color: @subtext0;
+    font-size: 0.8em;
+}
+#workspaces button:active {
+    border-radius: 128px;
+    color: @subtext0;
+    font-size: 0.8em;
+    background-color: shade(@rosewater, 0.8);
+}
+
+#workspaces button:focus {
+    border-radius: 128px;
+    color: @subtext0;
+    font-size: 0.8em;
+    background-color: shade(@rosewater, 0.8);
+}
+
+#workspaces button.active {
+    background-color: shade(@rosewater, 0.8);
+}
+
+#workspaces button.persistent {
+    background-color: shade(@rosewater, 0.8);
+}
+#workspaces button.special {
+    background-color: shade(@rosewater, 0.8);
+}

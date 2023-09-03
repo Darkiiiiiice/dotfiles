@@ -1,0 +1,436 @@
+* {
+    // all: unset;
+    font-family: feather;
+    font-family: FiraCode Nerd Font;
+}
+
+$background: #282828;
+$foreground: #ebdbb2;
+
+$full_black: #181616;
+$hard_black: #1d2021;
+$black: #282828;
+$light_black: #3c3836;
+$grayl: #a89984;
+$gray: #928374;
+$hard_gray: #7c6f64;
+$hard_red: #9d0006;
+$light_red: #fb4834;
+$redl: #fb4934;
+$red: #cc241d;
+$greenl: #b8bb26;
+$green: #98971a;
+$yellowl: #fabd2f;
+$yellow: #d79921;
+$hard_blue: #076678;
+$bluel: #83a598;
+$blue: #458588;
+$purplel: #d3869b;
+$purple: #b16286;
+$aqual: #8ec07c;
+$aqua: #689d6a;
+$orangel: #fe8019;
+$orange: #d65d0e;
+$cyan: #7DCFFF;
+$white: #fbf1c7;
+$light_white: #f9f5d7;
+
+button {
+    all: unset;
+}
+
+.module {
+    margin: 0px 0px 0px 0px;
+    border-radius: 10px 16px 0px 10px;
+    background-color: #21da7a;
+}
+
+.left_modules {
+    margin: .2rem 0rem .2rem .5rem;
+    border-radius: 16px 16px 16px 16px;
+    padding-right: 1rem;
+    padding-left: 1rem;
+    background-color: $hard_black;
+    border: $hard_gray solid 1px;
+}
+
+.right_modules {
+    margin: .2px .5rem .2rem 0px;
+    border-radius: 16px 16px 16px 16px;
+    background-color: $hard_black;
+    border: $hard_gray solid 1px;
+}
+
+.center_modules {
+    margin: 0rem 0rem 0rem 0rem;
+    border-radius: 16px 16px 16px 16px;
+    background-color: $hard_black;
+    border: $hard_gray solid 1px;
+}
+
+.bar_class {
+    background-color: $light_black;
+    border-radius: 16px;
+    opacity: 0.8;
+    ;
+
+}
+
+/** tooltip!! **/
+tooltip.background {
+    background-color: #0f0f17;
+    font-size: 18px;
+    border-radius: 10px;
+    color: #bfc9db;
+}
+
+tooltip label {
+    margin: 6px;
+}
+
+
+.works {
+    font-size: 16px;
+    font-weight: bold;
+    margin: 0 1rem 0 1rem;
+    // border: $hard_gray dotted 2px;
+    padding-left: .5rem;
+    padding-right: .5rem;
+    border-radius: 16px;
+}
+
+.line {
+    margin: 0 0rem 0 0rem;
+}
+
+.line_icon {
+    font-size: 24px;
+    font-weight: bold;
+    color: $gray;
+}
+
+.mem {
+    font-size: 18px;
+    font-weight: bold;
+    padding-right: .3rem;
+    background-color: $light_black;
+    border: $hard_gray solid 1px;
+    border-radius: 16px;
+    margin-left: .3rem;
+    margin-right: .3rem;
+}
+
+.mem_icon {
+    font-size: 18px;
+    font-weight: bold;
+    border-radius: 12px;
+    min-width: 28px;
+    color: $purple;
+}
+
+.mem_text {
+    color: $foreground;
+    background-color: $hard_black;
+    border-radius: 10px;
+    margin: 0 0rem 0 .5rem;
+}
+
+.cpu {
+    font-size: 18px;
+    font-weight: bold;
+    padding-right: .3rem;
+    background-color: $light_black;
+    border: $hard_gray solid 1px;
+    border-radius: 16px;
+    margin-left: .3rem;
+    margin-right: .3rem;
+}
+
+.cpu_icon {
+    font-size: 18px;
+    font-weight: bold;
+    border-radius: 12px;
+    min-width: 28px;
+    color: $blue;
+}
+
+.cpu_text {
+    color: $foreground;
+    background-color: $hard_black;
+    border-radius: 10px;
+    margin: 0 0rem 0 .5rem;
+}
+
+.disk {
+    font-size: 18px;
+    font-weight: bold;
+    padding-right: .3rem;
+    background-color: $light_black;
+    border: $hard_gray solid 1px;
+    border-radius: 16px;
+    margin-left: .3rem;
+    margin-right: .3rem;
+}
+
+.disk_icon {
+    font-size: 18px;
+    font-weight: bold;
+    border-radius: 12px;
+    min-width: 28px;
+    color: $aqua;
+}
+
+.disk_text {
+    color: $foreground;
+    background-color: $hard_black;
+    border-radius: 10px;
+    margin: 0 0rem 0 .5rem;
+}
+
+.temprature {
+    font-size: 18px;
+    font-weight: bold;
+    padding-right: .3rem;
+    background-color: $light_black;
+    border: $hard_gray solid 1px;
+    border-radius: 16px;
+    margin-left: .3rem;
+    margin-right: .3rem;
+}
+
+.temprature_icon {
+    font-size: 18px;
+    font-weight: bold;
+    border-radius: 12px;
+    min-width: 28px;
+    color: $orange;
+}
+
+.temprature_text {
+    color: $foreground;
+    background-color: $hard_black;
+    border-radius: 10px;
+    margin: 0 0rem 0 .5rem;
+}
+
+.icondot {
+    color: $foreground;
+    font-size: 8px;
+    font-weight: bold;
+    margin: .5rem;
+}
+
+.net {
+    font-size: 18px;
+    font-weight: bold;
+    padding-left: .3rem;
+    margin-right: .3rem;
+    background-color: $light_black;
+    border: $hard_gray solid 1px;
+    border-radius: 16px;
+}
+
+.net_speed {
+    font-size: 14px;
+    font-weight: bold;
+
+    margin-left: .5rem;
+    padding-left: .3rem;
+    padding-right: .3rem;
+    background-color: $light_black;
+    // border: #e40c0c dotted 2px;
+    border-left: $hard_gray solid 2px;
+
+    border-radius: 16px;
+}
+
+.net_icon {
+    font-size: 18px;
+    font-weight: bold;
+    border-radius: 16px;
+    margin-right: .7rem;
+    // margin-left: .5rem;
+    // background-color: #21da7a;
+    min-width: 24px;
+    color: $blue;
+}
+
+.net_icon_up {
+    font-size: 14px;
+    font-weight: bold;
+    border-radius: 12px;
+    // background-color: #21da7a;
+    min-width: 28px;
+    color: $redl;
+}
+
+.net_icon_down {
+    font-size: 14px;
+    font-weight: bold;
+    border-radius: 12px;
+    // background-color: #21da7a;
+    min-width: 28px;
+    color: $orangel;
+}
+
+.net_text {
+    color: $foreground;
+    // background-color: #38384d;
+    border-radius: 10px;
+    font-size: 12px;
+}
+
+.bat {
+    font-size: 18px;
+    font-weight: bold;
+    margin-right: .2rem;
+    padding-right: .6rem;
+    background-color: $full_black;
+    border: $hard_gray solid 1px;
+    border-radius: 16px;
+}
+
+.bat_icon {
+    font-size: 18px;
+    font-weight: bold;
+    border-radius: 12px;
+    // background-color: #21da7a;
+    min-width: 28px;
+    color: $aqual;
+}
+
+.bat_text {
+    color: $foreground;
+    // background-color: #38384d;
+    border-radius: 10px;
+    font-size: 12px;
+}
+
+.arch {
+    font-size: 24px;
+    font-weight: bold;
+    margin: 0 .5rem 0 .3rem;
+    // background-color: #BB9AF7;
+}
+
+.arch_icon {
+    font-size: 24px;
+    font-weight: bold;
+    // border: #21da7a dotted 2px;
+    // border-radius: 12px;
+    min-width: 32px;
+    color: $hard_blue;
+}
+
+.clock {
+    font-size: 16px;
+    font-weight: bold;
+    margin: 0 1rem 0 0rem;
+    padding-left: .5rem;
+    padding-right: .5rem;
+    border-radius: 16px;
+    margin-top: .3rem;
+    margin-bottom: .3rem;
+    background-color: $light_black;
+    border: $hard_gray solid 1px;
+}
+
+.clock_time_sep {
+    font-size: 12px;
+    font-weight: bold;
+    color: $foreground;
+}
+
+.clock_hour_class,
+.clock_minute_class {
+    font-size: 23px;
+}
+
+.clock_date_class {
+    font-size: 16px;
+    margin: 0rem .5rem 0px 2px;
+    color: $foreground;
+    // border: $hard_gray solid 1px;
+    border-radius: 14px;
+    background-color: $black;
+    padding-left: .5rem;
+    padding-right: .5rem;
+}
+
+.clock_minute_class {
+    font-size: 12px;
+    color: $foreground;
+}
+
+.clock_hour_class {
+    color: $foreground;
+    font-weight: bold;
+    font-size: 12px;
+}
+
+.clock_time_icon {
+    color: $purplel;
+    font-weight: bold;
+    font-size: 16px;
+    margin: 0px .5rem 1px 0px;
+}
+
+.bright {
+    font-size: 16px;
+    font-weight: bold;
+    margin: 0 1rem 0 1rem;
+}
+
+.bright_icon {
+    font-size: 16px;
+    color: $yellowl;
+    margin: 0px .3rem 0px 0px;
+}
+
+
+.brightbar trough highlight {
+    background-image: linear-gradient(to left, $redl 50%, $red 80%, $hard_red 100% *50);
+    border-radius: 10px;
+}
+
+scale trough {
+    all: unset;
+    background-image: linear-gradient(to right, $bluel 50%, $blue 80%, $hard_blue 100% *50);
+    border-radius: 16px;
+    min-height: 3px;
+    min-width: 160px;
+    margin: 0px 0px 0px 0px;
+}
+
+scale trough slider {
+    all: unset;
+    background-color: $light_black;
+    min-height: 8px;
+    min-width: 12px;
+    border-radius: 16px;
+
+}
+
+scale trough highlight {
+    all: unset;
+    min-height: 6px;
+}
+
+
+/* Unoccupied */
+.w {
+    margin: 0 .5rem 0px 0px;
+    color: $redl;
+}
+
+/* Focused */
+.f {
+    color: $yellowl;
+}
+
+window {
+    background-color: $hard_black;
+    color: $foreground;
+    padding: .3rem;
+    opacity: 0.8;
+}
