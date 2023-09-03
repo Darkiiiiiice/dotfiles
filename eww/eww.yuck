@@ -22,8 +22,16 @@
   :initial "[{}]"
   `ip -j link show wlp1s0`
 )
+(defpoll net_ipv4 :interval "1m"
+  :initial "[{}]"
+  `ip -j -4 addr show wlp1s0`
+)
+(defpoll arch :interval "1m"
+  :initial ""
+  `uname -a`
+)
 
-(defpoll clock_hour :interval "1h" "date +\%I")
+(defpoll clock_hour :interval "10m" "date +\%H")
 (defpoll clock_minute :interval "1m" "date +\%M")
 (defpoll clock_sec :interval "1s" "date +\%S")
 (defpoll clock_date :interval "24h" "date '+%Y-%m-%d'")
@@ -91,7 +99,7 @@
         (brightness_percent >= 25 && brightness_percent < 50 ? "󰃞" : "󰃝")
         }
         :class "bright_icon"
-        :tooltip "brightness"
+        :tooltip "brightness ${brightness_percent}%"
       )
       (revealer :transition "slideleft"
         :reveal br_reveal
@@ -104,7 +112,7 @@
           :flipped false
           :marks true
           :tooltip "${brightness_percent}%"
-          :max 100
+          :max 101
           :min 0
           :onchange "brightnessctl set {}%"
         )
@@ -134,8 +142,7 @@
         :duration "600ms"
         (button
           :class "clock_date_class"
-          ; TODO: call calendar
-          :onclick "$HOME/.config/eww/bar/scripts/pop calendar" clock_date
+          :onclick "" clock_date
         )
       )
     )
@@ -154,7 +161,7 @@
       :justify "left"
       :angle 0
       :class "cpu_icon"
-      :tooltip "${EWW_CPU}"
+      :tooltip "Cores: ${arraylength(EWW_CPU.cores)}"
     )
     (circular-progress
       :value {EWW_CPU.avg}
@@ -162,10 +169,9 @@
       :thickness 4
       :clockwise true
       :class "cpu_text"
-      :tooltip "${EWW_CPU.avg}"
+      :tooltip "${round(EWW_CPU.avg,2)}%"
       (button
         :class "icondot"
-        :tooltip "battery on 100%"
         :onclick "$HOME/.config/eww/bar/scripts/pop system"
         ""
       )
@@ -195,10 +201,9 @@
       :thickness 4
       :clockwise true
       :class "mem_text"
-      :tooltip "${EWW_RAM.avg}"
+      :tooltip "${round(EWW_RAM.used_mem_perc, 2)}%"
       (button
         :class "icondot"
-        :tooltip "battery on 100%"
         :onclick "$HOME/.config/eww/bar/scripts/pop system"
         ""
       )
@@ -218,7 +223,7 @@
       :justify "left"
       :angle 0
       :class "temprature_icon"
-      :tooltip "${EWW_RAM}"
+      :tooltip "${EWW_TEMPS}"
     )
     (circular-progress
       :value {EWW_TEMPS.AMDGPU_EDGE}
@@ -226,10 +231,9 @@
       :thickness 4
       :clockwise true
       :class "temprature_text"
-      :tooltip "${EWW_CPU.avg}"
+      :tooltip "${EWW_TEMPS.AMDGPU_EDGE} °C"
       (button
         :class "icondot"
-        :tooltip "battery on 100%"
         :onclick "$HOME/.config/eww/bar/scripts/pop system"
         ""
       )
@@ -279,7 +283,7 @@
       :justify "left"
       :angle 0
       :class "net_icon"
-      :tooltip "${net_state[0]}"
+      :tooltip "${net_ipv4[0].addr_info[0].local}"
     )
     (revealer
       :transition "slideleft"
@@ -326,7 +330,6 @@
       :justify "left"
       :angle 0
       :class "disk_icon"
-      :tooltip "${EWW_DISK}"
     )
     (circular-progress
       :value {EWW_DISK["/"].used_perc}
@@ -337,7 +340,6 @@
       :tooltip "${EWW_DISK["/"]}"
       (button
         :class "icondot"
-        :tooltip "battery on 100%"
         :onclick "$HOME/.config/eww/bar/scripts/pop system"
         ""
       )
@@ -351,7 +353,6 @@
       :tooltip "${EWW_DISK["/home"]}"
       (button
         :class "icondot"
-        :tooltip "battery on 100%"
         :onclick "$HOME/.config/eww/bar/scripts/pop system"
         ""
       )
@@ -372,7 +373,7 @@
       :justify "left"
       :angle 0
       :class "arch_icon"
-      :tooltip "brightness"
+      :tooltip "${arch}"
     )
   )
 )
