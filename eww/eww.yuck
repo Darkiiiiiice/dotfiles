@@ -258,12 +258,12 @@
       EWW_BATTERY['BAT0'].capacity < 70 ? (EWW_BATTERY['BAT0'].status == "Charging"?"󰢞":"󰂀") :
       EWW_BATTERY['BAT0'].capacity < 80 ? (EWW_BATTERY['BAT0'].status == "Charging"?"󰂊":"󰂁") :
       EWW_BATTERY['BAT0'].capacity < 90 ?(EWW_BATTERY['BAT0'].status == "Charging"?"󰂋":"󰂂") :
-      (EWW_BATTERY['BAT0'].status == "Full"?"󰁹":"󰂅")
+      (EWW_BATTERY['BAT0'].status == "Full"?"󰁹": (EWW_BATTERY['BAT0'].status == "Discharging"?"󰁹":"󰂅")) 
       }
       :justify "left"
       :angle 0
       :class "bat_icon"
-      :tooltip "Status: ${EWW_BATTERY['BAT0'].status}"
+      :tooltip "Status: ${EWW_BATTERY['BAT0']}"
     )
     (label :text "${EWW_BATTERY['BAT0'].capacity}%"
       :class "bat_text"
