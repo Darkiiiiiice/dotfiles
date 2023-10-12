@@ -249,7 +249,7 @@
     :valign "center"
     :spacing 0
     (label
-      :text {EWW_BATTERY['BAT0'].capacity < 10 ? (EWW_BATTERY['BAT0'].status == "Charging"?"":"󰢜") :
+      :text {EWW_BATTERY['BAT0'].capacity < 10 ? (EWW_BATTERY['BAT0'].status == "Charging"?"󰢜":"󰁻") :
       EWW_BATTERY['BAT0'].capacity < 20 ?(EWW_BATTERY['BAT0'].status == "Charging"?"󰂆":"󰁻")  :
       EWW_BATTERY['BAT0'].capacity < 30 ? (EWW_BATTERY['BAT0'].status == "Charging"?"󰂇": "󰁼"):
       EWW_BATTERY['BAT0'].capacity < 40 ? (EWW_BATTERY['BAT0'].status == "Charging"?"󰂈": "󰁽"):
